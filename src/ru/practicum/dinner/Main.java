@@ -1,19 +1,15 @@
 package ru.practicum.dinner;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
-
     static DinnerConstructor dc;
     static Scanner scanner;
-    static Random random;
 
     public static void main(String[] args) {
         dc = new DinnerConstructor();
         scanner = new Scanner(System.in);
-        random = new Random();
 
         while (true) {
             printMenu();
@@ -27,7 +23,10 @@ public class Main {
                     generateDishCombo();
                     break;
                 case "3":
+                    System.out.println("Выход из программы");
                     return;
+                default:
+                    System.out.println("Такой команды нет");
             }
 
             System.out.println("-".repeat(20));
@@ -52,24 +51,25 @@ public class Main {
         dc.addNewDish(dishType, dishName);
 
         System.out.println("Добавлено новое блюдо (тип - " + dishType + ", название - " + dishName + ")");
-        System.out.println("*".repeat(10));
-        System.out.println(dc.dinners);
-        System.out.println("*".repeat(10));
     }
 
     // Метод для получения наборов обедов
     private static void generateDishCombo() {
+        if (dc.dishes.isEmpty()) {
+            System.out.println("В конструкторе обедов отсутствуют блюда. Необходимо добавить блюда в конструктор " +
+                    "для возможности получения наборов обедов");
+            return;
+        }
         System.out.println("Начинаем конструировать обед...");
-
         System.out.println("Введите количество наборов, которые нужно сгенерировать:");
         if (!scanner.hasNextInt()) {
             System.out.println("Некорректный ввод, необходимо ввести число");
-            // Считываем некорректный ввод
+            // Очищаем буфер от некорректного ввода
             scanner.nextLine();
             return;
         }
         int numberOfCombos = scanner.nextInt();
-        // Считываем \n
+        // Очищаем буфер от \n
         scanner.nextLine();
 
         if (numberOfCombos < 1) {
@@ -78,24 +78,19 @@ public class Main {
         }
 
         System.out.println("Вводите типы блюда, разделяя символом переноса строки (enter). " +
-                "Для завершения ввода введите пустую строку");
-        //String nextItem = scanner.nextLine();
-        //реализуйте ввод типов блюд
-        /*while (!nextItem.isEmpty()) {
-            System.out.println(nextItem);
-        }*/
+                "Для завершения ввода введите пустую строку:");
         ArrayList<String> dishTypes = new ArrayList<>();
-        while (true) {
-            String nextItem = scanner.nextLine();
 
-            if (nextItem.isEmpty()) {
+        while (true) {
+            String nextDishType = scanner.nextLine();
+            if (nextDishType.isEmpty()) {
                 break;
             }
 
-            if (dc.checkType(nextItem)) {
-                dishTypes.add(nextItem);
+            if (dc.checkType(nextDishType)) {
+                dishTypes.add(nextDishType);
             } else {
-                System.out.println("Такого типа блюда нет. Попробуйте ввести другой тип");
+                System.out.println("Такого типа блюда нет. Попробуйте ввести другой тип:");
             }
         }
 
@@ -105,18 +100,10 @@ public class Main {
             return;
         }
 
-        // сгенерируйте комбинации блюд и выведите на экран
-        for (int i = 0; i < numberOfCombos; i++) {
-            ArrayList<String> dishes = new ArrayList<>();
-
+        ArrayList<ArrayList<String>> combos = dc.generateDishCombo(numberOfCombos, dishTypes);
+        for (int i = 0; i < combos.size(); i++) {
             System.out.println("Комбо " + (i + 1));
-            for(String type : dishTypes) {
-                ArrayList<String> dishesNames = dc.dinners.get(type);
-                String randomDish = dishesNames.get(random.nextInt(dishesNames.size()));
-                dishes.add(randomDish);
-            }
-
-            System.out.println(dishes);
+            System.out.println(combos.get(i));
         }
     }
 }

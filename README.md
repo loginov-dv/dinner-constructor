@@ -1,2 +1,2 @@
-# dinner-constructor
-Precode for sprint 3 dinner constructor
+# Финальный проект спринта 3
+Конструктор обедов
