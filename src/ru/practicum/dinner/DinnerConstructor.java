@@ -6,7 +6,7 @@ import java.util.Random;
 
 // Класс, который содержит основную логику по хранению блюд и генерации комбинаций
 public class DinnerConstructor {
-    private HashMap<String, ArrayList<String>> dishes;
+    private final HashMap<String, ArrayList<String>> dishes;
     private final Random random;
 
     DinnerConstructor() {
