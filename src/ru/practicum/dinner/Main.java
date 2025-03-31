@@ -13,7 +13,7 @@ public class Main {
 
         while (true) {
             printMenu();
-            String command = scanner.nextLine();
+            String command = scanner.nextLine().trim();
 
             switch (command) {
                 case "1":
@@ -44,9 +44,9 @@ public class Main {
     // Метод для добавления нового блюда
     private static void addNewDish() {
         System.out.println("Введите тип блюда:");
-        String dishType = scanner.nextLine();
+        String dishType = scanner.nextLine().trim();
         System.out.println("Введите название блюда:");
-        String dishName = scanner.nextLine();
+        String dishName = scanner.nextLine().trim();
 
         dc.addNewDish(dishType, dishName);
 
@@ -55,7 +55,7 @@ public class Main {
 
     // Метод для получения наборов обедов
     private static void generateDishCombo() {
-        if (dc.dishes.isEmpty()) {
+        if (!dc.hasDishes()) {
             System.out.println("В конструкторе обедов отсутствуют блюда. Необходимо добавить блюда в конструктор " +
                     "для возможности получения наборов обедов");
             return;
@@ -82,7 +82,7 @@ public class Main {
         ArrayList<String> dishTypes = new ArrayList<>();
 
         while (true) {
-            String nextDishType = scanner.nextLine();
+            String nextDishType = scanner.nextLine().trim();
             if (nextDishType.isEmpty()) {
                 break;
             }
